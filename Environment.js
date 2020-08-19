@@ -1,0 +1,41 @@
+class Environment {
+  constructor(record = {}, parent = null) {
+    this.record = record
+    this.parent = parent
+  }
+
+  /**
+   * Creates a variable with a given name and value.
+   *
+   * @param {*} name
+   * @param {*} value
+   */
+  define(name, value) {
+    this.record[name] = value
+    return value
+  }
+  /**
+   * Looks up for variable value
+   *
+   * @param {*} name
+   */
+  lookup(name) {
+    if (!this.record.hasOwnProperty(name)) {
+      throw new ReferenceError('Variable ' + name + '  is not defined')
+    }
+    return this.resolve(name).record[name]
+  }
+
+  resolve(name) {
+    if (this.record.hasOwnProperty(name)) {
+      return this
+    }
+    if (this.parent === null) {
+      throw new ReferenceError('Variable ' + name + '  is not defined')
+    }
+    console.log(this.parent.resolve)
+    return this.parent.resolve(name)
+  }
+}
+
+module.exports = Environment
