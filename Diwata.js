@@ -38,6 +38,26 @@ class Diwata {
     if (exp[0] === '/') {
       return this.eval(exp[1], env) / this.eval(exp[2], env)
     }
+    // Comparison Operators
+    if (exp[0] === '>') {
+      return this.eval(exp[1], env) > this.eval(exp[2], env)
+    }
+
+    if (exp[0] === '>=') {
+      return this.eval(exp[1], env) >= this.eval(exp[2], env)
+    }
+
+    if (exp[0] === '<') {
+      return this.eval(exp[1], env) < this.eval(exp[2], env)
+    }
+
+    if (exp[0] === '<=') {
+      return this.eval(exp[1], env) <= this.eval(exp[2], env)
+    }
+
+    if (exp[0] === '=') {
+      return this.eval(exp[1], env) === this.eval(exp[2], env)
+    }
 
     // Blocks Expression
     if (exp[0] === 'begin') {
@@ -54,6 +74,25 @@ class Diwata {
     if (exp[0] === 'set') {
       const [, name, value] = exp
       return env.assign(name, this.eval(value, env))
+    }
+
+    // If Expression
+    if (exp[0] === 'if') {
+      const [, condition, consequent, alternate] = exp
+      if (this.eval(condition, env)) {
+        return this.eval(consequent, env)
+      }
+      return this.eval(alternate, env)
+    }
+
+    // While Expression
+    if (exp['0'] === 'while') {
+      const [, condition, body] = exp
+      let result
+      while (this.eval(condition, env)) {
+        result = this.eval(body, env)
+      }
+      return result
     }
 
     if (Utils.isVariableName(exp)) {
