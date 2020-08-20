@@ -14,6 +14,18 @@ class Environment {
     this.record[name] = value
     return value
   }
+
+  /**
+   * Creates a variable with a given name and value.
+   *
+   * @param {*} name
+   * @param {*} value
+   */
+  assign(name, value) {
+    this.resolve(name).record[name] = value
+    return value
+  }
+
   /**
    * Looks up for variable value
    *
