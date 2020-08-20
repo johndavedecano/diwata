@@ -20,9 +20,6 @@ class Environment {
    * @param {*} name
    */
   lookup(name) {
-    if (!this.record.hasOwnProperty(name)) {
-      throw new ReferenceError('Variable ' + name + '  is not defined')
-    }
     return this.resolve(name).record[name]
   }
 
@@ -33,7 +30,6 @@ class Environment {
     if (this.parent === null) {
       throw new ReferenceError('Variable ' + name + '  is not defined')
     }
-    console.log(this.parent.resolve)
     return this.parent.resolve(name)
   }
 }
