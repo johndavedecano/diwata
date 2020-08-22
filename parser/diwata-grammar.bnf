@@ -1,0 +1,35 @@
+
+// LEXICAL GRAMMAR
+%lex
+
+%%
+
+\s+
+
+"[^\"]*\"        return 'STRING'
+
+\d+              return 'NUMBER'
+
+[\w\-+*=<>/]]+   return 'SYMBOL'
+
+/lex
+
+// GRAMMAR
+%%
+
+Exp
+  : Atom
+  | List
+  ;
+Atom
+  : NUMBER { $$ = Number($1) }
+  | STRING
+  | SYMBOL
+  ;
+List
+  : '(' ListEntries ')' { $$ = $2 }
+  ;
+ListEntries
+  : ListEntries Exp { $1.push($2); $$ = $1 }
+  | /* empty */ { $$ = [] }
+  ;
