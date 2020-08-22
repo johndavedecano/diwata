@@ -1,5 +1,6 @@
 const assert = require('assert')
-const testUtil = require('./test-util')
+
+console.log('testing blocks.....')
 
 module.exports = (i) => {
   assert.strictEqual(

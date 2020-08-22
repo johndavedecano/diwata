@@ -1,5 +1,7 @@
 const assert = require('assert')
 
+console.log('testing math.....')
+
 module.exports = (i) => {
   assert.strictEqual(i.eval(1), 1)
   assert.strictEqual(i.eval('"hello"'), 'hello')

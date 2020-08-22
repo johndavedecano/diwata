@@ -1,5 +1,6 @@
 const assert = require('assert')
 
+console.log('testing variables.....')
 module.exports = (i) => {
   // Variables
   assert.strictEqual(i.eval(['var', 'x', 10]), 10)

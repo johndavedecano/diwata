@@ -1,5 +1,7 @@
 const assert = require('assert')
 
+console.log('testing ifelse.....')
+
 module.exports = (i) => {
   assert.strictEqual(
     i.eval([
