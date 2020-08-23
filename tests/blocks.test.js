@@ -26,6 +26,7 @@ module.exports = (i) => {
   )
 
   testUtil.test(
+    i,
     `
     (begin 
       (var x 10)
