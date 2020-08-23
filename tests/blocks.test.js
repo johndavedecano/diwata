@@ -1,5 +1,7 @@
 const assert = require('assert')
 
+const testUtil = require('./test-util')
+
 console.log('testing blocks.....')
 
 module.exports = (i) => {
@@ -21,5 +23,15 @@ module.exports = (i) => {
       'result',
     ]),
     20,
+  )
+
+  testUtil.test(
+    `
+    (begin 
+      (var x 10)
+      (var y 20)
+      (+ (* x 10) y))
+  `,
+    120,
   )
 }

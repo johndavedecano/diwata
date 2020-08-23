@@ -1,34 +1,38 @@
-
-// LEXICAL GRAMMAR
+// Lexical Grammar
 %lex
 
 %%
 
-\s+
+\s+             /* skip whitespace */
 
-"[^\"]*\"        return 'STRING'
+\"[^\"]*\"      return 'STRING'
 
-\d+              return 'NUMBER'
+\d+             return 'NUMBER'
 
-[\w\-+*=<>/]]+   return 'SYMBOL'
+[\w\-+*=<>/]+   return 'SYMBOL'
+
 
 /lex
 
-// GRAMMAR
+// Syntactic Grammar
+
 %%
 
 Exp
   : Atom
   | List
   ;
+
 Atom
   : NUMBER { $$ = Number($1) }
   | STRING
   | SYMBOL
   ;
+
 List
   : '(' ListEntries ')' { $$ = $2 }
   ;
+
 ListEntries
   : ListEntries Exp { $1.push($2); $$ = $1 }
   | /* empty */ { $$ = [] }

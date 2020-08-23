@@ -5,4 +5,4 @@ function test(lang, code, expected) {
   assert.strictEqual(lang.eval(exp), expected)
 }
 
-module.exports = test
+module.exports = { test }
