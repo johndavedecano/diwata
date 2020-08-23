@@ -6,17 +6,18 @@ const mathTests = require('./math.test')
 const variables = require('./variables.test')
 const ifelse = require('./ifelse.test')
 const whiletest = require('./while.test')
+const builtinunctions = require('./builtinunctions.test')
 
-const diwata = new Diwata(
-  new Environment({
-    null: null,
-    true: true,
-    false: false,
-    VERSION: '0.1',
-  }),
-)
+const diwata = new Diwata()
 
-const tests = [blocksTests, mathTests, variables, ifelse, whiletest]
+const tests = [
+  blocksTests,
+  mathTests,
+  variables,
+  ifelse,
+  whiletest,
+  builtinunctions,
+]
 
 tests.forEach((t) => t(diwata))
 

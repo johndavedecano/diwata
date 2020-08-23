@@ -9,7 +9,7 @@ class Diwata {
    * Constructor
    * @param {Environment} global
    */
-  constructor(global = new Environment()) {
+  constructor(global = GlobalEnvironment) {
     this.global = global
   }
 
@@ -21,43 +21,6 @@ class Diwata {
     // Self Evaluating Expression
     if (Utils.isNumber(exp)) return exp
     if (Utils.isString(exp)) return exp.slice(1, -1)
-
-    // Math Operators
-    if (exp[0] === '+') {
-      return this.eval(exp[1], env) + this.eval(exp[2], env)
-    }
-    if (exp[0] === '*') {
-      return this.eval(exp[1], env) * this.eval(exp[2], env)
-    }
-    if (exp[0] === '-') {
-      return this.eval(exp[1], env) - this.eval(exp[2], env)
-    }
-    if (exp[0] === '%') {
-      return this.eval(exp[1], env) % this.eval(exp[2], env)
-    }
-    if (exp[0] === '/') {
-      return this.eval(exp[1], env) / this.eval(exp[2], env)
-    }
-    // Comparison Operators
-    if (exp[0] === '>') {
-      return this.eval(exp[1], env) > this.eval(exp[2], env)
-    }
-
-    if (exp[0] === '>=') {
-      return this.eval(exp[1], env) >= this.eval(exp[2], env)
-    }
-
-    if (exp[0] === '<') {
-      return this.eval(exp[1], env) < this.eval(exp[2], env)
-    }
-
-    if (exp[0] === '<=') {
-      return this.eval(exp[1], env) <= this.eval(exp[2], env)
-    }
-
-    if (exp[0] === '=') {
-      return this.eval(exp[1], env) === this.eval(exp[2], env)
-    }
 
     // Blocks Expression
     if (exp[0] === 'begin') {
@@ -74,6 +37,10 @@ class Diwata {
     if (exp[0] === 'set') {
       const [, name, value] = exp
       return env.assign(name, this.eval(value, env))
+    }
+
+    if (Utils.isVariableName(exp)) {
+      return env.lookup(exp)
     }
 
     // If Expression
@@ -95,8 +62,14 @@ class Diwata {
       return result
     }
 
-    if (Utils.isVariableName(exp)) {
-      return env.lookup(exp)
+    if (Array.isArray(exp)) {
+      const fn = this.eval(exp[0], env)
+
+      const args = exp.slice(1).map((arg) => this.eval(arg, env))
+
+      if (typeof fn === 'function') {
+        return fn(...args)
+      }
     }
 
     throw `Unimplemeted:${JSON.stringify(exp)}`
@@ -120,5 +93,44 @@ class Diwata {
     return result
   }
 }
+
+const GlobalEnvironment = new Environment({
+  null: null,
+  true: true,
+  false: false,
+  VERSION: '0.1',
+  // Operators
+  '+'(op1, op2) {
+    return op1 + op2
+  },
+  '-'(op1, op2 = null) {
+    if (op2 == null) return -op1
+    return op1 - op2
+  },
+  '/'(op1, op2) {
+    return op1 / op2
+  },
+  '*'(op1, op2) {
+    return op1 * op2
+  },
+  '%'(op1, op2) {
+    return op1 % op2
+  },
+  '>'(op1, op2) {
+    return op1 > op2
+  },
+  '<'(op1, op2) {
+    return op1 < op2
+  },
+  '>='(op1, op2) {
+    return op1 >= op2
+  },
+  '<='(op1, op2) {
+    return op1 <= op2
+  },
+  '='(op1, op2) {
+    return op1 === op2
+  },
+})
 
 module.exports = Diwata
